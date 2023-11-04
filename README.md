@@ -1,130 +1,68 @@
-# CCTP Sample App
+USDC Transfer README
+This README file provides essential information and guidelines for conducting transfers of USDC (USD Coin), a popular stablecoin built on the Ethereum blockchain. USDC is a fully backed digital dollar that offers stability and transparency, making it an ideal choice for various financial transactions.
 
-A sample app used to demonstrate CCTP step by step capabilities on testnet. The app currently supports Ethereum Goerli, Avalanche Fuji C-Chain, and Arbitrum Goerli testnets.
+Table of Contents
+Introduction
+Getting Started
+Prerequisites
+USDC Wallet
+Transferring USDC
+Sending USDC
+Receiving USDC
+Transaction Verification
+Best Practices
+Security
+FAQ
+Resources
+License
+1. Introduction
+USDC (USD Coin) is a stablecoin cryptocurrency that is pegged to the United States dollar on a 1:1 basis. It is widely used for digital transactions, remittances, trading, and as a store of value. This README will guide you on how to conduct secure and efficient USDC transfers.
 
-![](./docs/screenshot.png)
+2. Getting Started
+Prerequisites
+Before you start transferring USDC, ensure you have the following:
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A basic understanding of cryptocurrencies and blockchain technology.
+Access to the Ethereum blockchain (for Ethereum-based USDC) or the respective blockchain for other USDC variants.
+USDC Wallet
+You'll need a compatible wallet that supports USDC. Popular options include:
 
-# Setup
+MetaMask
+Trust Wallet
+Coinbase Wallet
+Hardware wallets like Ledger or Trezor
+Make sure your wallet is set up and funded with the necessary USDC before proceeding.
 
-## Install dependencies
+3. Transferring USDC
+Sending USDC
+Open your USDC wallet.
+Navigate to the "Send" or "Transfer" section.
+Enter the recipient's wallet address.
+Specify the amount of USDC you want to send.
+Review the transaction details, including fees.
+Confirm the transaction, and it will be processed on the blockchain.
+Receiving USDC
+To receive USDC, simply provide your wallet address to the sender. Ensure the sender verifies the address to avoid any errors.
 
-Install NVM
+4. Transaction Verification
+You can verify the status of your USDC transactions on a blockchain explorer, such as Etherscan for Ethereum-based USDC. Transactions typically include details like sender, receiver, amount, and transaction status.
 
-```
-# Install nvm using brew
-brew install nvm
-# Or install it manually
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
-```
+5. Best Practices
+Double-check the recipient's address before sending USDC.
+Consider network congestion and transaction fees, which may vary depending on the blockchain.
+Keep your wallet's private keys secure. Never share them with anyone.
+Regularly update your wallet software for security enhancements.
+6. Security
+Use hardware wallets for added security.
+Enable two-factor authentication (2FA) on your wallet.
+Be cautious of phishing scams and ensure the authenticity of wallet addresses.
+7. FAQ
+For common questions and answers related to USDC transfers, refer to the FAQ section in this document.
 
-Use the correct node version (version found in .nvmrc)
+8. Resources
+Find additional resources, including official documentation, forums, and support, in the Resources section.
 
-```
-nvm use
-```
+9. License
+This README file is provided under an open-source license. You are free to use and modify this document for your specific needs. Refer to the LICENSE file for details.
 
-Install npm dependencies
-
-```
-yarn install
-```
-
-## Running the app
-
-Run the sample app locally:
-
-```
-yarn start
-```
-
-The sample app will now be running on: http://localhost:3000.
-
-## Testing
-
-Launch the test runner in interactive watch mode
-
-```
-yarn test
-```
-
-Run tests with test converage.
-
-```
-yarn test:unit:coverage
-```
-
-### Linting/Formatting/Type Checks
-
-We use eslint, prettier and typescript to validate our code. In combination with husky and lint-staged, we run a check on every precommit on staged changes.
-
-You can also use `yarn check-all` or `yarn fix-all` to validate or fix all lint/format/typing issues. See [package.json](./package.json) for more details.
-
-### Continuous Integration using Github Actions
-
-We use Github actions to run linter and all the tests. The workflow configuration can be found in [github/workflows/ci.yml](./.github/workflows/ci.yml)
-
-### Build and deploy
-
-Build the app into static bundle
-
-```
-yarn build
-```
-
-To deploy, install and run `serve`
-
-```
-yarn global add serve serve -s build
-```
-
-See [deployment docs](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-# Instructions
-
-## Adding a new chain
-
-We have two config files which will be need to be updated to add a new chain support.
-
-1. Add the chain enum and definitions
-
-- In `./src/constants/chains.ts`, we need to add some enums and details for the chain to support. Add the new chain details to `Chain`, `SupportedChainId`, `SupportedChainIdHex`, `CHAIN_TO_CHAIN_ID`, `CHAIN_TO_CHAIN_NAME`, `DestinationDomain` and `CHAIN_ID_HEXES_TO_PARAMETERS`.
-
-2. Add the addresses for the new chain
-
-- In `./src/constants/addresses.ts`, we need to add the contract addresses for the new chain to support. For `CHAIN_IDS_TO_USDC_ADDRESSES`, `CHAIN_IDS_TO_TOKEN_MESSENGER_ADDRESSES` and `CHAIN_IDS_TO_MESSAGE_TRANSMITTER_ADDRESSES`, add the coressponding addresses for the new chain. This will allow the hooks to interact with the relevant addresses
-
-3. Add the logo for the new chain
-
-- We will also need to upload a svg image for the UI to display the chain logo. In `./src/assets/chains/`, add a svg logo for the new chain and then in `index.ts`, add the new icon to the `CHAIN_ICONS` map.
-
-4. Add the new chain to the form dropdown selector
-
-- In `./components/Send/SendForm.tsx`, Add the new chain to `CHAIN_SELECT_ITEMS` and this should automatically update the UI dropdown.
-
-## Configuration for Mainnet
-
-This sample app is development for testnet use, but if we want to update this for mainnet, these are the steps needed.
-
-1. Update the chain definitions to mainnet
-
-- In `./src/constants/chains.ts`, update the `SupportedChainId`, `SupportedChainIdHex` and `ChainParameter` objects with mainnet values. We may want to rename the enums as well.
-
-2. Update the addresses to mainnet
-
-- In `./src/constants/addresses.ts`, update the addresses with mainnet addresses. The mainnet address values can be found on https://developers.circle.com/stablecoin/docs.cctp-protocol-contract.
-
-3. Update the attestation API URL
-
-- In `./src/constants/index.ts`, update `IRIS_ATTESTATION_API_URL` with the mainnet value. The mainnet API url can be found on https://developers.circle.com/stablecoin/docs/cctp-getting-started#attestation-service-api.
-
-## Setup Typechain
-
-We use Typechain in this sample app to easily integrate smart contract with generated Typescript bindings. If we want to add some functionality and update the abis, we can update the abis as necessary in `./src/abis` and then run the following command to update the generated files.
-
-```
-typechain --target=ethers-v5 --out-dir src/typechain src/abis/*.json
-```
-
-This generates `typechain` folder under `src` containing contract types to be used by our hooks
+Disclaimer: USDC is a cryptocurrency and, like all cryptocurrencies, is subject to market risks and volatility. This README is for informational purposes only and does not constitute financial advice. Always conduct your research and consider your financial situation before engaging in USDC transactions.
