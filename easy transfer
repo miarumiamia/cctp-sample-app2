@@ -1,0 +1,50 @@
+from web3 import Web3
+from web3.middleware import construct_sign_and_send_raw_middleware
+from eth_account import Account
+
+# Connect to an Ethereum node
+w3 = Web3(Web3.HTTPProvider('https://mainnet.infura.io/v3/your_infura_project_id'))
+
+# Contract and account details
+usdc_contract_address = "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"  # USDC token contract address
+private_key = "your_private_key_here"  # Private key of the sender's Ethereum account
+sender_address = "0xYourSenderAddress"  # Sender's Ethereum address
+receiver_address = "0xReceiverAddress"  # Receiver's Ethereum address
+
+# Load the USDC contract ABI
+with open('usdc_abi.json', 'r') as abi_file:
+    usdc_abi = abi_file.read()
+
+# Create contract instance
+usdc_contract = w3.eth.contract(address=usdc_contract_address, abi=usdc_abi)
+
+# Construct middleware for signing transactions
+w3.middleware_onion.add(construct_sign_and_send_raw_middleware(private_key))
+
+# Function to transfer USDC tokens
+def transfer_usdc(amount, receiver_address):
+    # Convert amount to token units
+    amount_in_token_units = Web3.toWei(amount, 'ether')
+
+    # Encode the function call
+    data = usdc_contract.encodeABI(fn_name='transfer', args=[receiver_address, amount_in_token_units])
+
+    # Construct transaction
+    tx = {
+        'to': usdc_contract_address,
+        'data': data,
+        'gas': 100000,  # Adjust gas limit accordingly
+        'gasPrice': w3.eth.gas_price,
+        'nonce': w3.eth.get_transaction_count(sender_address),
+    }
+
+    # Sign and send the transaction
+    signed_tx = w3.eth.account.sign_transaction(tx, private_key)
+    tx_hash = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
+
+    return tx_hash.hex()
+
+# Example usage
+amount_to_transfer = 100  # Amount of USDC to transfer
+tx_hash = transfer_usdc(amount_to_transfer, receiver_address)
+print("Transfer initiated. Transaction hash:", tx_hash)
